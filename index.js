@@ -18,7 +18,7 @@ const app = express()
 
 app.use(
     cors({
-      origin: "https://admin-server-1.onrender.com",
+      origin: "http://localhost:5173",
       credentials: true,
     })
   );
