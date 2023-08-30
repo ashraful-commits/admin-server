@@ -5,6 +5,8 @@ import router from "./routes/pageRoutes.js"
 import mongodbConnect from "./confige/mongodbConfige.js"
 import RoleRouter from "./routes/RoleRouter.js"
 import PermissionRouter from "./routes/PermissionRouter.js"
+import cors from "cors"
+import cookiesParser from "cookie-parser"
 //=========================== config
 dotenv.config()
 
@@ -13,6 +15,14 @@ const port  = process.env.PROT || 5000
 
 const app = express()
 //==============================  json and urlencoded
+
+app.use(
+    cors({
+      origin: "https://admin-server-1.onrender.com",
+      credentials: true,
+    })
+  );
+  app.use(cookiesParser())
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(express.static("public"))
