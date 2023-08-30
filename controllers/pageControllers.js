@@ -22,7 +22,7 @@ res.status(200).json({user,message:"user created successfully!"})
  */
 export const getAllUser = asyncHandler(async(req,res)=>{
 
-const user =await userModel.find()
+const user =await userModel.find().populate("role")
 !user && res.status(400).json({message:"user not found"})
 res.status(200).json({user,message:"user created successfully!"})
 })
