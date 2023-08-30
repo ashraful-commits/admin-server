@@ -2,25 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "/index.js",
-      "use": "@vercel/node"
+      "src": "dist/index.js",
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["dist/**"] }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "dist/index.js"
     }
-  ],
-  "env": {
-    "PORT": "5050",
-    "MOGODB_SERVER": "mongodb+srv://Ashraful:E0rRgRanXwiDTLyJ@mern.sho5qfe.mongodb.net/admindashboard",
-    "JWT_TOKEN": "SEOyKq1vMKXcBjBnJjGcOPeckSp80dQCUtI7lmgagW8=",
-    "APP_ENV": "development"
-  },
-  "functions": {
-    "myFunction": {
-      "maxDuration": 20
-    }
-  }
+  ]
 }
