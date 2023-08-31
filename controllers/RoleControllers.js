@@ -7,11 +7,11 @@ import { createSlug } from "../utility/createSlug.js"
  * USER REGISTRATION
  */
 export const createRoles = asyncHandler(async(req,res)=>{
-const {name,roles} = req.body
+const {name,permissions} = req.body
 const role =await RoleModel.create({
     name,
     slug:createSlug(name),
-    roles
+    permissions
 })
 !role && res.status(400).json({message:"role not found"})
 res.status(200).json({role,message:"role created successfully!"})
@@ -26,7 +26,7 @@ export const getAllRoles = asyncHandler(async(req,res)=>{
 const role =await RoleModel.find()
 !role && res.status(400).json({message:"role not found"})
 res.status(200).json({role,message:"role created successfully!"})
-})
+}).populate("permissions")
 
 
 
