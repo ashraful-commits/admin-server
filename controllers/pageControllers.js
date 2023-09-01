@@ -26,14 +26,26 @@ const user =await userModel.find().populate("role")
 !user && res.status(400).json({message:"user not found"})
 res.status(200).json({user,message:"user created successfully!"})
 })
+
+/***
+ * GET METHOD
+ * GET SINGLE USER
+ */
+export const getSingleUser = asyncHandler(async(req,res)=>{
+const {id} = req.params
+console.log(id)
+const user =await userModel.findById(id).populate("role")
+!user && res.status(400).json({message:"no single user found"})
+res.status(200).json({user,message:"single user get successfully!"})
+})
 /***
  * PUT METHOD
  * UPDATE USER
  */
 export const updateUser = asyncHandler(async(req,res)=>{
-const {name,email,password,role} = req.body
+const {name,email,role} = req.body
 const {id} = req.params
-const user =await userModel.findByIdAndUpdate(id,{name,email,password,role},{new:true})
+const user =await userModel.findByIdAndUpdate(id,{name,email,role},{new:true})
 !user && res.status(400).json({message:"user not Updated"})
 res.status(200).json({user,message:"user Updated successfully!"})
 })

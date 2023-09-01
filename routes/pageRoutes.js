@@ -1,5 +1,5 @@
 import express from "express"
-import { deleteUser,me, getAllUser, updateUser, userLogin, userRegistration, updateUserStatus } from "../controllers/pageControllers.js"
+import { deleteUser,me, getAllUser, updateUser, userLogin, userRegistration, updateUserStatus, getSingleUser } from "../controllers/pageControllers.js"
 import { tokenVerify } from "../middlewares/TokenVerify.js"
 
 
@@ -9,7 +9,7 @@ router.route("/").post(userRegistration).get(getAllUser)
 
 router.route("/").get(getAllUser)
 router.route("/me").get(tokenVerify,me)
-router.route("/:id").put(updateUser).delete(deleteUser).patch(updateUserStatus)
+router.route("/:id").put(updateUser).delete(deleteUser).patch(updateUserStatus).get(getSingleUser)
 
 
 export default router

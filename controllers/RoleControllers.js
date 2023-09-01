@@ -38,9 +38,10 @@ res.status(200).json({role,message:"role created successfully!"})
 
 
 export const updateRole = asyncHandler(async(req,res)=>{
-    const {name,roles} = req.body
+    const {name,permissions} = req.body
+    console.log(req.body)
     const {id} = req.params
-    const role =await RoleModel.findByIdAndUpdate(id,{name,slug:name&&createSlug(name),roles},{new:true})
+    const role =await RoleModel.findByIdAndUpdate(id,{name,slug:name&&createSlug(name),permissions},{new:true})
     !role && res.status(400).json({message:"role not Updated"})
     res.status(200).json({role,message:"role Updated successfully!"})
     })
