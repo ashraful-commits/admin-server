@@ -23,10 +23,10 @@ res.status(200).json({role,message:"role created successfully!"})
  */
 export const getAllRoles = asyncHandler(async(req,res)=>{
 
-const role =await RoleModel.find()
+const role =await RoleModel.find().populate("permissions")
 !role && res.status(400).json({message:"role not found"})
 res.status(200).json({role,message:"role created successfully!"})
-}).populate("permissions")
+})
 
 
 
