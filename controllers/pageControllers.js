@@ -55,6 +55,7 @@ res.status(200).json({user,message:"user Updated successfully!"})
  */
 export const updateUserStatus = asyncHandler(async(req,res)=>{
 const {status} = req.body
+console.log(status)
 const {id} = req.params
 const user =await userModel.findByIdAndUpdate(id,{status},{new:true})
 !user && res.status(400).json({message:"user status not Updated"})
