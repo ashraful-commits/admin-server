@@ -13,7 +13,7 @@ slug:{
 },
 permissions:{
 type:[mongoose.Schema.Types.ObjectId],
-ref:"Permissions",
+ref:"Permission",
 default:null
 },
 trash:{
