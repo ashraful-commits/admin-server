@@ -7,6 +7,9 @@ import RoleRouter from "./routes/RoleRouter.js"
 import PermissionRouter from "./routes/PermissionRouter.js"
 import cors from "cors"
 import cookiesParser from "cookie-parser"
+import { errorHandeler } from "./middlewares/errorHendler.js"
+
+
 //=========================== config
 dotenv.config()
 
@@ -22,17 +25,18 @@ app.use(
       credentials: true,
     })
   );
-  app.use(cookiesParser())
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
-app.use(express.static("public"))
-//========================== user router
-app.use("/api/v1/auth",router)
-//========================== Role router
-app.use("/api/v1/role",RoleRouter)
-//========================== Permission router
-app.use("/api/v1/permissions",PermissionRouter)
 
+  app.use(cookiesParser())
+  app.use(express.json())
+  app.use(express.urlencoded({extended:false}))
+  app.use(express.static("public"))
+  //========================== user router
+  app.use("/api/v1/auth",router)
+  //========================== Role router
+  app.use("/api/v1/role",RoleRouter)
+  //========================== Permission router
+  app.use("/api/v1/permissions",PermissionRouter)
+app.use(errorHandeler);
 
 //================================  server create
 app.listen(port,()=>{

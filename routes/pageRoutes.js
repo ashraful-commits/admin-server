@@ -4,11 +4,10 @@ import { tokenVerify } from "../middlewares/TokenVerify.js"
 
 
 const router = express.Router()
+router.route("/me").get(tokenVerify,me)
 router.route("/login").post(userLogin)
 router.route("/").post(userRegistration).get(getAllUser)
-
 router.route("/").get(getAllUser)
-router.route("/me").get(tokenVerify,me)
 router.route("/:id").put(updateUser).delete(deleteUser).patch(updateUserStatus).get(getSingleUser)
 
 

@@ -91,11 +91,11 @@ const {email,password} = req.body
   const token = makeToken({email:loginUser.email,id:loginUser._id},process.env.JWT_TOKEN,"30d")
   res
   .cookie("accessToken", token, {
-    httponly: true,
+    httpOnly: true,
     secure: process.env.APP_ENV === "development" ? false : true,
     sameSite:"strict",
     path:"/",
-    maxage: 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   })
   .status(200)
   .json({
@@ -108,6 +108,6 @@ const {email,password} = req.body
 
 export const me = asyncHandler(async(req,res)=>{
   const user = req.me
-  !user && res.status(200).json({message:"Not login user!"})
-res.status(200).json({me:user,message:"Loged in user"})
+  !user && res.status(200).json({user,message:"Not login user!"})
+res.status(200).json({user,message:"Loged in user"})
 })
