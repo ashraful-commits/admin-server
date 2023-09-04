@@ -91,7 +91,7 @@ const {email,password} = req.body
   const token = makeToken({email:loginUser.email,id:loginUser._id},process.env.JWT_TOKEN,"30d")
   res
   .cookie("accessToken", token, {
-    httpOnly: false,
+    httpOnly: true,
     secure: process.env.APP_ENV === "development" ? false : true,
     sameSite:"strict",
     path:"/",
