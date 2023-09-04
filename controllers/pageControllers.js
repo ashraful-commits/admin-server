@@ -91,7 +91,7 @@ const {email,password} = req.body
   const token = makeToken({email:loginUser.email,id:loginUser._id},process.env.JWT_TOKEN,"30d")
   res
   .cookie("accessToken", token, {
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.APP_ENV === "development" ? false : true,
     sameSite:"strict",
     path:"/",
@@ -111,3 +111,12 @@ export const me = asyncHandler(async(req,res)=>{
   !user && res.status(200).json({user,message:"Not login user!"})
 res.status(200).json({user,message:"Loged in user"})
 })
+
+export const userLogout = asyncHandler(async (req, res) => {
+  // Clear the access token cookie or invalidate the session
+  res.clearCookie("accessToken"); // Assuming the cookie is named "accessToken"
+
+
+  // Send a response to confirm the logout
+  res.status(200).json({ message: "Logout successful!" });
+});

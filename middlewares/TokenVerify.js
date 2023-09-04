@@ -5,7 +5,7 @@ import { userModel } from "../model/UserModel.js";
 export const tokenVerify = asyncHandler(async(req, res, next) => {
 
   const token = req.headers.authorization || req.headers.Authorization;
-  console.log(token)
+
   // const accessToken = req.cookies.accessToken
 //  console.log(accessToken)
   if (!token) {
