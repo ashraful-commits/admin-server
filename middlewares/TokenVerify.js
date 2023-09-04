@@ -2,13 +2,19 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { userModel } from "../model/UserModel.js";
 
-export const tokenVerify = (req, res, next) => {
-  // const token = req.headers.authorization || req.headers.Authorization;
-  const accessToken = req.cookies.accessToken
-  if (!accessToken) {
+export const tokenVerify = asyncHandler(async(req, res, next) => {
+
+  const token = req.headers.authorization || req.headers.Authorization;
+  console.log(token)
+  // const accessToken = req.cookies.accessToken
+//  console.log(accessToken)
+  if (!token) {
     return res.status(401).json({ message: "No Access Token" });
   }
-  // const accessToken = token.split(" ")[1];
+  // if (!accessToken) {
+  //   return res.status(401).json({ message: "No Access Token" });
+  // }
+  const accessToken = token.split(" ")[1];
   jwt.verify(
     accessToken,
     process.env.JWT_TOKEN,
@@ -30,4 +36,4 @@ export const tokenVerify = (req, res, next) => {
       }
     })
   );
-};
+})

@@ -19,9 +19,15 @@ const port  = process.env.PROT || 5000
 const app = express()
 //==============================  json and urlencoded
 
+// app.use(
+//     cors({
+//       origin: "http://localhost:5173",
+//       credentials: true,
+//     })
+//   );
 app.use(
     cors({
-      origin: "http://localhost:5173",
+      origin: "https://admin-dashboard-seven-kappa.vercel.app",
       credentials: true,
     })
   );
