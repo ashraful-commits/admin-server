@@ -30,12 +30,12 @@ export const userRegistration = asyncHandler(async (req, res) => {
  * GET ALL USERS
  */
 export const getAllUser = asyncHandler(async (req, res) => {
-  const users = await userModel.find().populate("role");
+  const user = await userModel.find().populate("role");
 
   // Handle user retrieval success or failure
-  !users
+  !user
     ? res.status(400).json({ message: "Users not found" })
-    : res.status(200).json({ users, message: "Users retrieved successfully!" });
+    : res.status(200).json({ user, message: "Users retrieved successfully!" });
 });
 
 /**

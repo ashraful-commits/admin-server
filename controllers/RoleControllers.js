@@ -27,12 +27,12 @@ export const createRoles = asyncHandler(async (req, res) => {
  * GET ALL ROLES
  */
 export const getAllRoles = asyncHandler(async (req, res) => {
-  const roles = await RoleModel.find().populate("permissions");
+  const role = await RoleModel.find().populate("permissions");
 
   // Handle role retrieval success or failure
-  !roles
+  !role
     ? res.status(400).json({ message: "Roles not found" })
-    : res.status(200).json({ roles, message: "Roles retrieved successfully!" });
+    : res.status(200).json({ role, message: "Roles retrieved successfully!" });
 });
 
 /**
