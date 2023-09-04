@@ -1,48 +1,57 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
+// Define a Mongoose schema for users
 const userSchema = mongoose.Schema({
-  name:{
-    type:String,
-    require:true,
-    unique:true,
-    trim:true
+  // User's name
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
   },
-  email:{
-    type:String,
-    require:true,
-    unique:true,
-    trim:true
+  // User's email
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
   },
-  role:{
-  type:mongoose.Schema.Types.ObjectId,
-  default:"6009c0eee65f6dce28fb3e50",
-  require:true,
-  ref:"Role"
+  // Reference to the user's role using Role's ObjectId
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: "6009c0eee65f6dce28fb3e50", // Default role ID if not specified
+    required: true,
+    ref: "Role",
   },
-  password:{
-    type:String,
-    require:true,
-    trim:true
+  // User's password (you should store hashed passwords)
+  password: {
+    type: String,
+    required: true,
+    trim: true,
   },
-  photo:{
-    type:String,
-    require:true,
-    trim:true,
-    default:null,
+  // User's photo URL
+  photo: {
+    type: String,
+    required: true,
+    trim: true,
+    default: null,
   },
-  status:{
-    type:Boolean,
-    trim:true,
-    default:true
+  // Indicates the status of the user (e.g., active or inactive)
+  status: {
+    type: Boolean,
+    trim: true,
+    default: true,
   },
-  trash:{
-    type:Boolean,
-    trim:true,
-    default:true
-  }
-},{
-    timestamps:true
-})
+  // Indicates whether the user has been marked as "trashed" (soft delete)
+  trash: {
+    type: Boolean,
+    trim: true,
+    default: true,
+  },
+}, {
+  // Enable timestamps to automatically record createdAt and updatedAt
+  timestamps: true,
+});
 
-
-export  const userModel = mongoose.model("User",userSchema)
+// Create a Mongoose model based on the userSchema
+export const userModel = mongoose.model("User", userSchema);

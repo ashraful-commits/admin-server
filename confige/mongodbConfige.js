@@ -1,12 +1,20 @@
-import mongoose from "mongoose"
+// Import the mongoose library, which is a popular MongoDB library for Node.js.
+import mongoose from "mongoose";
 
-const mongodbConnect = async()=>{
+// Define an asynchronous function called 'mongodbConnect' responsible for connecting to the MongoDB server.
+const mongodbConnect = async () => {
     try {
-        const connect = await mongoose.connect(process.env.MOGODB_SERVER) 
-        console.log(`Mongodb connected!`.bgGreen.white)
+        // Use the 'await' keyword to connect to the MongoDB server using the 'mongoose.connect' method.
+        // The MongoDB server URL should be provided via the 'process.env.MOGODB_SERVER' environment variable.
+        const connect = await mongoose.connect(process.env.MOGODB_SERVER);
+
+        // If the connection is successful, log a message indicating that MongoDB is connected.
+        console.log(`MongoDB connected!`.bgGreen.white);
     } catch (error) {
-        console.log(error)
+        // If an error occurs during the connection process, log the error.
+        console.log(error);
     }
 }
 
-export default mongodbConnect
+// Export the 'mongodbConnect' function to make it available for use in other parts of your application.
+export default mongodbConnect;

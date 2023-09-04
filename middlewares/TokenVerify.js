@@ -7,7 +7,7 @@ export const tokenVerify = asyncHandler(async(req, res, next) => {
   // const token = req.headers.authorization || req.headers.Authorization;
 
   const accessToken = req.cookies.accessToken
-//  console.log(accessToken)
+
   // if (!token) {
   //   return res.status(401).json({ message: "Please Login!" });
   // }
@@ -20,7 +20,7 @@ export const tokenVerify = asyncHandler(async(req, res, next) => {
     process.env.JWT_TOKEN,
     asyncHandler(async (err, decode) => {
       if (err) {
-        console.error(err); // Log the error for debugging purposes
+      // Log the error for debugging purposes
         return res.status(401).json({ message: "Please Login!" });
       }
       try {
@@ -31,7 +31,7 @@ export const tokenVerify = asyncHandler(async(req, res, next) => {
         req.me = me;
         next();
       } catch (error) {
-        console.error(error); // Log any unexpected errors for debugging
+      // Log any unexpected errors for debugging
         res.status(500).json({ message: "Internal Server Error" });
       }
     })

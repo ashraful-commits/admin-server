@@ -1,29 +1,39 @@
 import mongoose from "mongoose";
 
+// Define a Mongoose schema for roles
 const RoleSchema = mongoose.Schema({
-name:{
-    type:String,
-    require:true,
-    unique:true,
-},
-slug:{
-    type:String,
-    require:true,
-    unique:true,
-},
-permissions:{
-type:[mongoose.Schema.Types.ObjectId],
-ref:"Permission",
-default:null
-},
-trash:{
-    type:Boolean,
-    default:true,
-},
-status:{
- type:Boolean,
- default:true
-}
-},{timestamps:true})
+  // Name of the role (e.g., "Admin", "User", "Editor")
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  // Slug is a URL-friendly version of the role name
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  // Array of permission IDs associated with the role
+  permissions: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Permission",
+    default: null,
+  },
+  // Indicates whether the role has been marked as "trashed" (soft delete)
+  trash: {
+    type: Boolean,
+    default: true,
+  },
+  // Indicates the status of the role (e.g., active or inactive)
+  status: {
+    type: Boolean,
+    default: true,
+  },
+}, {
+  // Enable timestamps to automatically record createdAt and updatedAt
+  timestamps: true,
+});
 
-export const RoleModel = mongoose.model("Role",RoleSchema)
+// Create a Mongoose model based on the RoleSchema
+export const RoleModel = mongoose.model("Role", RoleSchema);

@@ -1,121 +1,170 @@
-import asyncHandler from "express-async-handler"
-import { userModel } from "../model/UserModel.js"
-import { createHash } from "../utility/HashPassword.js"
-import { hashCompare } from "../utility/HashCompare.js"
-import { makeToken } from "../utility/makeToken.js"
-/***
+import asyncHandler from "express-async-handler";
+import { userModel } from "../model/UserModel.js";
+import { createHash } from "../utility/HashPassword.js";
+import { hashCompare } from "../utility/HashCompare.js";
+import { makeToken } from "../utility/makeToken.js";
+
+/**
  * POST METHOD
  * USER REGISTRATION
  */
-export const userRegistration = asyncHandler(async(req,res)=>{
-const {name,email,password,role} = req.body
-const user =await userModel.create({
-    name,email,password:await createHash(password),role
-})
-!user && res.status(400).json({message:"user not found"})
-res.status(200).json({user,message:"user created successfully!"})
-})
+export const userRegistration = asyncHandler(async (req, res) => {
+  const { name, email, password, role } = req.body;
 
-/***
+  // Create a new user using the userModel and hashed password
+  const user = await userModel.create({
+    name,
+    email,
+    password: await createHash(password),
+    role,
+  });
+
+  // Handle user creation success or failure
+  !user
+    ? res.status(400).json({ message: "User not created" })
+    : res.status(200).json({ user, message: "User created successfully!" });
+});
+
+/**
  * GET METHOD
- * GET ALL USER
+ * GET ALL USERS
  */
-export const getAllUser = asyncHandler(async(req,res)=>{
+export const getAllUser = asyncHandler(async (req, res) => {
+  const users = await userModel.find().populate("role");
 
-const user =await userModel.find().populate("role")
-!user && res.status(400).json({message:"user not found"})
-res.status(200).json({user,message:"user created successfully!"})
-})
+  // Handle user retrieval success or failure
+  !users
+    ? res.status(400).json({ message: "Users not found" })
+    : res.status(200).json({ users, message: "Users retrieved successfully!" });
+});
 
-/***
+/**
  * GET METHOD
  * GET SINGLE USER
  */
-export const getSingleUser = asyncHandler(async(req,res)=>{
-const {id} = req.params
-console.log(id)
-const user =await userModel.findById(id).populate("role")
-!user && res.status(400).json({message:"no single user found"})
-res.status(200).json({user,message:"single user get successfully!"})
-})
-/***
+export const getSingleUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  // Find a single user by ID and populate the 'role' field
+  const user = await userModel.findById(id).populate("role");
+
+  // Handle user retrieval success or failure
+  !user
+    ? res.status(400).json({ message: "No single user found" })
+    : res.status(200).json({ user, message: "Single user retrieved successfully!" });
+});
+
+/**
  * PUT METHOD
  * UPDATE USER
  */
-export const updateUser = asyncHandler(async(req,res)=>{
-const {name,email,role} = req.body
-const {id} = req.params
-const user =await userModel.findByIdAndUpdate(id,{name,email,role},{new:true})
-!user && res.status(400).json({message:"user not Updated"})
-res.status(200).json({user,message:"user Updated successfully!"})
-})
-/***
+export const updateUser = asyncHandler(async (req, res) => {
+  const { name, email, role } = req.body;
+  const { id } = req.params;
+
+  // Update user information and return the updated user
+  const user = await userModel.findByIdAndUpdate(id, { name, email, role }, { new: true });
+
+  // Handle user update success or failure
+  !user
+    ? res.status(400).json({ message: "User not updated" })
+    : res.status(200).json({ user, message: "User updated successfully!" });
+});
+
+/**
  * PATCH METHOD
- * UPDATE USER
+ * UPDATE USER STATUS
  */
-export const updateUserStatus = asyncHandler(async(req,res)=>{
-const {status} = req.body
-console.log(status)
-const {id} = req.params
-const user =await userModel.findByIdAndUpdate(id,{status},{new:true})
-!user && res.status(400).json({message:"user status not Updated"})
-res.status(200).json({user,message:"user status Updated successfully!"})
-})
-/***
+export const updateUserStatus = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+
+  // Update user status and return the updated user
+  const user = await userModel.findByIdAndUpdate(id, { status }, { new: true });
+
+  // Handle user status update success or failure
+  !user
+    ? res.status(400).json({ message: "User status not updated" })
+    : res.status(200).json({ user, message: "User status updated successfully!" });
+});
+
+/**
  * DELETE METHOD
  * DELETE USER
  */
-export const deleteUser = asyncHandler(async(req,res)=>{
+export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-const {id} = req.params
-const user =await userModel.findByIdAndDelete(id)
-!user && res.status(400).json({message:"user not Deleted"})
-res.status(200).json({user,message:"user deleted successfully!"})
-})
+  // Delete a user by ID
+  const user = await userModel.findByIdAndDelete(id);
 
-/***
+  // Handle user deletion success or failure
+  !user
+    ? res.status(400).json({ message: "User not deleted" })
+    : res.status(200).json({ user, message: "User deleted successfully!" });
+});
+
+/**
  * POST METHOD
  * LOGIN USER
  */
+export const userLogin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-export const userLogin = asyncHandler(async(req,res)=>{
-const {email,password} = req.body
-  const loginUser = await userModel.findOne({email})
-  if(!loginUser){
-    res.status(400).json({message:"User not found!"})
+  // Find the user by email
+  const loginUser = await userModel.findOne({ email });
+
+  // Handle user not found
+  if (!loginUser) {
+    res.status(400).json({ message: "User not found!" });
   }
-  const comparepass = hashCompare(password,loginUser.password)
-  if(!comparepass){
-    res.status(400).json({message:"Password not match!"})
+
+  // Compare the provided password with the stored hashed password
+  const comparePass = hashCompare(password, loginUser.password);
+
+  // Handle password mismatch
+  if (!comparePass) {
+    res.status(400).json({ message: "Password does not match!" });
   }
-  const token = makeToken({email:loginUser.email,id:loginUser._id},process.env.JWT_TOKEN,"30d")
+
+  // Generate a JWT token for the user
+  const token = makeToken({ email: loginUser.email, id: loginUser._id }, process.env.JWT_TOKEN, "30d");
+
+  // Set the access token as a cookie
   res
-  .cookie("accessToken", token, {
-    httpOnly: true,
-    secure: process.env.APP_ENV === "development" ? false : true,
-    sameSite:"strict",
-    path:"/",
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  })
-  .status(200)
-  .json({
-    token: token,
-    message: "Login successfull!",
-    user: loginUser,
-  });
-  
-})
+    .cookie("accessToken", token, {
+      httpOnly: true,
+      secure: process.env.APP_ENV === "development" ? false : true,
+      sameSite: "strict",
+      path: "/",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    })
+    .status(200)
+    .json({
+      token: token,
+      message: "Login successful!",
+      user: loginUser,
+    });
+});
 
-export const me = asyncHandler(async(req,res)=>{
-  const user = req.me
-  !user && res.status(200).json({user,message:"Not login user!"})
-res.status(200).json({user,message:"Loged in user"})
-})
+/**
+ * GET METHOD
+ * RETRIEVE CURRENTLY LOGGED-IN USER
+ */
+export const me = asyncHandler(async (req, res) => {
+  const user = req.me;
 
+  // Handle no logged-in user
+  !user ? res.status(200).json({ user, message: "Not logged-in user!" }) : res.status(200).json({ user, message: "Logged-in user" });
+});
+
+/**
+ * POST METHOD
+ * LOGOUT USER
+ */
 export const userLogout = asyncHandler(async (req, res) => {
   // Clear the access token cookie or invalidate the session
-  res.clearCookie("accessToken"); // Assuming the cookie is named "accessToken"
-
+  res.clearCookie("accessToken");
 
   // Send a response to confirm the logout
   res.status(200).json({ message: "Logout successful!" });
