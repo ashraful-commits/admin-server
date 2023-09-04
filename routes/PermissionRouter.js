@@ -1,20 +1,11 @@
-import express from "express";
-import {
-  CreatePermission,
-  deletePermission,
-  getAllPermissions,
-  updatePermission,
-  updatePermissionStatus,
-} from "../controllers/PermissionController.js";
+import express from "express"
+import { createPermission, deletePermission, getAllPermissions, updatePermission, updatePermissionStatus } from "../controllers/PermissionController.js"
 
-// Create an Express Router for handling permissions
-const PermissionRouter = express.Router();
 
-// Route to create a new permission and get all permissions
-PermissionRouter.route("/").post(CreatePermission).get(getAllPermissions);
 
-// Route to update, delete, or patch (update status) a permission by ID
-PermissionRouter.route("/:id").put(updatePermission).delete(deletePermission).patch(updatePermissionStatus);
+const PermissionRouter = express.Router()
 
-// Export the PermissionRouter
-export default PermissionRouter;
+PermissionRouter.route("/").post(createPermission).get(getAllPermissions)
+PermissionRouter.route("/:id").put(updatePermission).delete(deletePermission).patch(updatePermissionStatus)
+
+export default PermissionRouter
