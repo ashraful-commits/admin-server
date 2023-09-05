@@ -3,6 +3,7 @@ import { userModel } from "../model/UserModel.js";
 import { createHash } from "../utility/HashPassword.js";
 import { hashCompare } from "../utility/HashCompare.js";
 import { makeToken } from "../utility/makeToken.js";
+import { cloudeUpload } from "../utility/cloudinary.js";
 
 /**
  * POST METHOD
@@ -169,3 +170,35 @@ export const userLogout = asyncHandler(async (req, res) => {
   // Send a response to confirm the logout
   res.status(200).json({ message: "Logout successful!" });
 });
+
+
+//================= profile photo upload
+
+
+export const profilPhotoUpload = asyncHandler(async(req,res)=>{
+  try {
+    const { id } = req.params;
+    const photoUrl = await cloudeUpload(req);
+
+    // Ensure 'cloudeUpload' function properly returns a 'photoUrl' object
+    if (!photoUrl || !photoUrl.secure_url) {
+      return res.status(400).json({ message: "Invalid photo URL" });
+    }
+
+    // Use 'await' with 'findByIdAndUpdate' and capture the updated 'user'
+    const user = await userModel.findByIdAndUpdate(
+      id,
+      { photo: photoUrl.secure_url },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user, message: "photo uploaded" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+})

@@ -26,6 +26,7 @@ const app = express();
 //       credentials: true,
 //     })
 // );
+
 app.use(
     cors({
       origin: "https://admin-dashboard-seven-kappa.vercel.app",

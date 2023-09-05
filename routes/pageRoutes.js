@@ -9,8 +9,10 @@ import {
   updateUserStatus,
   getSingleUser,
   userLogout,
+  profilPhotoUpload,
 } from "../controllers/pageControllers.js";
 import { tokenVerify } from "../middlewares/TokenVerify.js";
+import { profilePhoto } from "../middlewares/Multer.js";
 
 // Create an Express Router
 const router = express.Router();
@@ -29,6 +31,7 @@ router.route("/logout").post(userLogout);
 
 // Route to get all users
 router.route("/").get(getAllUser);
+router.route("/photo/:id").post(profilePhoto , profilPhotoUpload);
 
 // Route to update, delete, patch (update status), or get a single user by ID
 router
