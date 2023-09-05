@@ -32,7 +32,6 @@ const userSchema = mongoose.Schema({
   // User's photo URL
   photo: {
     type: String,
-    required: true,
     trim: true,
     default: null,
   },

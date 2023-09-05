@@ -8,8 +8,13 @@ cloudinary.v2.config({
 
 
 export const cloudeUpload = async(req)=>{
-    fs.writeFileSync("./" + req.file.orginalname,req.file.buffer)
-    const data = await cloudinary.v2.uploader.upload("./"+req.file.orginalname,req.file.buffer)
-    fs.unlinkSync("./"+ req.file.orginalname)
+ 
+    const data = await cloudinary.v2.uploader.upload(req.file.path)
+   
     return data
+}
+export const cloudeDelete = async(publicId)=>{
+ 
+     await cloudinary.v2.uploader.destroy(publicId)
+   
 }

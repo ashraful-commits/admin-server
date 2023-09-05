@@ -3,7 +3,8 @@ import { userModel } from "../model/UserModel.js";
 import { createHash } from "../utility/HashPassword.js";
 import { hashCompare } from "../utility/HashCompare.js";
 import { makeToken } from "../utility/makeToken.js";
-import { cloudeUpload } from "../utility/cloudinary.js";
+import { cloudeDelete, cloudeUpload } from "../utility/cloudinary.js";
+import { findPublicId } from "../utility/PublicId.js";
 
 /**
  * POST METHOD
@@ -98,7 +99,11 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
   // Delete a user by ID
   const user = await userModel.findByIdAndDelete(id);
+  const publicId = findPublicId(user.photo)
+  if(publicId){
 
+    await cloudeDelete(publicId)
+  }
   // Handle user deletion success or failure
   !user
     ? res.status(400).json({ message: "User not deleted" })
@@ -179,7 +184,7 @@ export const profilPhotoUpload = asyncHandler(async(req,res)=>{
   try {
     const { id } = req.params;
     const photoUrl = await cloudeUpload(req);
-
+  console.log(req.file)
     // Ensure 'cloudeUpload' function properly returns a 'photoUrl' object
     if (!photoUrl || !photoUrl.secure_url) {
       return res.status(400).json({ message: "Invalid photo URL" });
